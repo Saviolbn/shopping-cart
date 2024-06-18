@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { PRODUCTS } from '../../products'
 import { ShopContext } from "../../context/shop-context";
 import { CartItem } from './Cart-Item';
@@ -9,7 +9,7 @@ export const Cart = () => {
   const { cartItems,getTotalCartAmount } = useContext(ShopContext);
   const total = getTotalCartAmount();
   const navigate = useNavigate();
-
+  const [itemExists,setItemExists] = useState([]);
   return (
     <div className='cart'>
       <div>
@@ -17,7 +17,8 @@ export const Cart = () => {
       </div>
       <div className='cartItems'>
         {PRODUCTS.map((product)=>{
-          if (cartItems[product.id] !==0) {
+          if (cartItems[product.id] !==0 || itemExists[product.id]) {
+            itemExists[product.id] = true;
             return <CartItem data={product}/>
           }
           return ""
@@ -34,5 +35,6 @@ export const Cart = () => {
         <h1>Your Cart is Empty</h1>
       )}
     </div>
+    
   )
 }
